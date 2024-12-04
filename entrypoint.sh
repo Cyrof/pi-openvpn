@@ -18,6 +18,9 @@ chmod 600 "$DIR"/dh.pem
 chmod 600 "$DIR"/ta.key
 chown -R root:root "$DIR"
 
+# generate client 
+echo "Generating client ovpn"
+/usr/local/bin/gen-client.sh
 
 # start OpenVPN server 
 echo "Starting OpenVPN server..."

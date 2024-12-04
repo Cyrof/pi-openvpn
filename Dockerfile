@@ -5,7 +5,8 @@ ENV DEFAULT_LOC=/usr/local/bin
 
 RUN apt-get update && apt-get install -y \
     openvpn \
-    easy-rsa && \
+    easy-rsa \
+    curl && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy easy rsa config to another location
@@ -18,9 +19,10 @@ RUN mkdir -p /usr/local/bin
 COPY gen-keys.sh /usr/local/bin/
 COPY entrypoint.sh /usr/local/bin/
 COPY server.conf /usr/local/bin/
+COPY gen-client.sh /usr/local/bin/
 
 # make script executable 
-RUN chmod +x /usr/local/bin/gen-keys.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/gen-keys.sh /usr/local/bin/entrypoint.sh /usr/local/bin/gen-client.sh
 
 # Expose the OpenVPN port (default is UDP/1194)
 EXPOSE 1194/udp
