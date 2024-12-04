@@ -1,6 +1,7 @@
 #! /bin/bash
 
 EASYRSA=/etc/easy-rsa
+VPN_NAME=${VPN_NAME:-"pivpn"}
 
 # navigate into easy rsa dir 
 cd "$EASYRSA"
@@ -14,7 +15,8 @@ fi
 # generate certificate authority 
 if [ ! -f "$EASYRSA/pki/ca.crt" ]; then 
     echo "Generating certificate authority..."
-    ./easyrsa build-ca nopass
+    # ./easyrsa build-ca nopass
+    echo -e "\n$VPN_NAME\n" | ./easyrsa build-ca nopass 
 fi
 
 # generate diffie-hellman 
@@ -26,7 +28,7 @@ fi
 # Generate server certificates
 if [ ! -f "$EASYRSA/pki/issued/server.crt" ]; then
     echo "Generating server certificate..."
-    ./easyrsa build-server-full server nopass
+    echo -e "yes\n" | ./easyrsa build-server-full server nopass
 fi 
 
 # generate HMAC key 
@@ -47,7 +49,8 @@ cp -rp "$EASYRSA/pki/"{ca.crt,dh.pem,ta.key,crl.pem,issued,private} /etc/openvpn
 
 # Generate client cert and keys 
 echo "Generating client certificates and keys"
-./easyrsa build-client-full clientname nopass
+# ./easyrsa build-client-full clientname nopass # should add confirmation 
+echo -e "yes\n" | ./easyrsa build-client-full clientname nopass 
 
 # Create directory & copy files to it 
 echo "Copying client certificates and keys..."

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services: 
+  openvpn: # name of server  
+    image: pi-openvpn
+    container_name: openvpn # name of the container 
+
+    cap_add: # additional capabilities to the container 
+      - NET_ADMIN # required for managing network interfaces and routing 
+
+    devices: 
+      - /dev/net/tun # attach the TUN device to the container for VPN tunneling 
+
+    ports:
+      - "1194:1194/udp" # map udp port 1193 to the host 
+
+    environment: 
+      - VPN_NAME=pivpn # environment for setting VPN common name
+    
